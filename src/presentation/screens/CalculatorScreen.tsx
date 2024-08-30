@@ -6,13 +6,28 @@ import { useCalculator } from "../hooks/useCalculator"
 export const CalculatorScreen = () => {
 
     const {
-        number, buildNumber, toogleSing, clean, deleteOperation, divideOperator, multiplyOperator, substractOperator, addOperator, prevNumber
+        formula, number, buildNumber, toogleSing, clean, deleteOperation, divideOperator, multiplyOperator, substractOperator, addOperator, prevNumber, calculateResult
     } = useCalculator();
     return (
         <View style={globalStyles.calculatorContainer}>
             <View style={globalStyles.viewPaddings}>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={globalStyles.mainResult}>{number}</Text>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={globalStyles.subResult}>{prevNumber}</Text>
+                <Text 
+                    adjustsFontSizeToFit 
+                    numberOfLines={1} 
+                    style={globalStyles.mainResult}>{formula}</Text>
+
+                {
+                (formula === prevNumber)
+                ? <Text style={globalStyles.subResult}> </Text>
+                : (
+                    <Text 
+                        adjustsFontSizeToFit 
+                        numberOfLines={1} 
+                        style={globalStyles.subResult}>
+                            { (prevNumber === '0') ? ' ' : prevNumber }
+                    </Text>                    
+                )
+            }
             </View>
             <View style={globalStyles.row}>
                 <CalculatorButton onPress={clean} label="C" color={colors.lightGray} blackText />
@@ -41,7 +56,7 @@ export const CalculatorScreen = () => {
             <View style={globalStyles.row}>
                 <CalculatorButton onPress={() => buildNumber('0')} label="0" doubleSize />
                 <CalculatorButton onPress={() => buildNumber('.')} label="." />
-                <CalculatorButton onPress={() => console.log('=')} label="=" color={colors.orange} />
+                <CalculatorButton onPress={calculateResult} label="=" color={colors.orange} />
             </View>
         </View>
     )
